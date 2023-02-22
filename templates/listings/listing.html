@@ -1,0 +1,157 @@
+{% extends "base.html" %}  
+{% load static %}
+
+{% block title %} | {{ listing.title }} {% endblock %}
+{% load humanize %}
+
+
+{% block content %}
+{% include "_partials/header.html" %}
+
+  <!-- BREADCRUMB AREA START -->
+<div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image "  data-bs-bg="img/bg/14.jpg">
+    <div class="container">
+        <div class="row">
+           
+            <div class="col-lg-12" style="margin-top:-70px; margin-bottom:-120px">
+                <div class="ltn__breadcrumb-inner">
+                    <h1 class="page-title"> {{ listing.title }}</h1>
+                    <div class="ltn__breadcrumb-list">
+                        <ul>
+                            <li><a href="{% url 'index' %}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> Home</a></li>
+                            <li><a href="{% url 'listings' %}"><span class="ltn__secondary-color"></span>Property Listings</a></li>
+                             <li><a href="{% url 'index' %}"><span class="ltn__secondary-color"></span> {{ listing.title }}</a></li>
+                            
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- BREADCRUMB AREA END -->
+
+
+  <!-- SHOP DETAILS AREA START -->
+  <div class="ltn__shop-details-area pb-10">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="ltn__shop-details-inner ltn__page-details-inner mb-60">
+
+                      <img src="{{ listing.photo_main.url }}" alt="Image">
+                      
+                    <ul class="ltn__list-item-2 ltn__list-item-2-before--- ltn__list-item-2-img mb-50">
+                        {% if listing.photo_1 %}    
+                        <li>
+                                <a href="{{ listing.photo_1.url }}" data-rel="lightcase:myCollection">
+                                    <img src="{{ listing.photo_1.url }}" alt="Image">
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% if listing.photo_2 %}
+                            <li>
+                                <a href="{{ listing.photo_2.url }}g" data-rel="lightcase:myCollection">
+                                    <img src="{{ listing.photo_2.url }}" alt="Image">
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% if listing.photo_3 %}
+                            <li>
+                                <a href="{{ listing.photo_3.url }}" data-rel="lightcase:myCollection">
+                                    <img src="{{ listing.photo_3.url }}" alt="Image">
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% if listing.photo_4 %}
+                            <li>
+                                <a href="{{ listing.photo_3.url }}" data-rel="lightcase:myCollection">
+                                    <img src="{{ listing.photo_3.url }}" alt="Image">
+                                </a>
+                            </li>
+                            {% endif %}
+
+                        </ul>
+
+                        <h1>{{ listing.title }}</h1>
+                    <label><span class="ltn__secondary-color"><i class="flaticon-pin"></i></span>{{ listing.address }}</label>
+                    <h4 class="title-2">Description</h4>
+                    <p>{{ listing.description}}</p>
+
+                    <h4 class="title-2">Property Detail</h4>  
+                    <div class="property-detail-info-list section-bg-1 clearfix mb-60">                          
+                        <ul>
+                            <li><label>Asking Price:</label> <span>${{ listing.price | intcomma }}</span></li>
+                            <li><label>Square Feet: </label> <span>{{ listing.sqft }}</span></li>
+                            <li><label>Bedrooms:</label> <span>{{ listing.bedrooms }}</span></li>
+                            <li><label>Bathroom:</label> <span>{{ listing.bathrooms }}</span></li>
+                            
+                        </ul>
+                        <ul>
+                            <li><label>Lot Size:</label> <span>{{ listing.lot_size }} Acres </span></li>
+                            <li><label>Garage:</label> <span>{{ listing.garage }}</span></li>
+                            <li><label>Listing Date:</label> <span>{{ listing.list_date }}</span></li>
+                            <li><label>Realtor:</label> <span>{{ listing.realtor }}</span></li>
+                           
+                        </ul>
+                    </div>
+      
+                    
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <aside class="sidebar ltn__shop-sidebar ltn__right-sidebar---">
+                    <!-- Author Widget -->
+                    <div class="widget ltn__author-widget">
+                        <div class="ltn__author-widget-inner text-center">
+                            <img src="{{ listing.realtor.photo.url }}" alt="Image">
+                            <h5>{{ listing.realtor }}</h5>
+                            <h5 style="font-weight:500">{{ listing.realtor.email }}</h5>
+                            <small>Property Realtor</small>
+                             <div class="ltn__social-media">
+                                <ul>
+                                    <li><a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="#" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="#" title="Linkedin"><i class="fab fa-linkedin"></i></a></li>
+                                    </ul>
+                            </div>
+                        </div>
+                    </div>
+                  
+                    <!-- Inquiry form section -->
+                    <div class="widget ltn__form-widget">
+                        <h4 class="ltn__widget-title ltn__widget-title-border-2">Make an Inquiry</h4>
+                        <form action="{% url 'contact' %}" method="POST">
+                              <!-- Alerts -->
+  {% include '_partials/_alerts.html' %}
+                            {% csrf_token %}
+              {% if user.is_authenticated %}
+              <input type="hidden" name="user_id" value="{{ user.id }}">
+               {% else %}
+              <input type="hidden" name="user_id" value="0">
+            {% endif %}
+            <input type="hidden" name="realtor_email" value="{{ listing.realtor.email }}">
+            <input type="hidden" name="listing_id" value="{{ listing.id }}">
+            <input type="text" name="listing" class="form-control" value="{{ listing.title }}">
+            <input type="text" placeholder="fullname" name="name" class="form-control" {% if user.is_authenticated %} value="{{ user.first_name }} {{ user.last_name }}" {% endif %} required>
+            <input type="email" placeholder="Email" name="email" class="form-control" {% if user.is_authenticated %} value="{{ user.email }}" {% endif %} required>
+            <input type="text" aria-placeholder="Phone No" name="phone" placeholder="Your PhoneNo*" class="form-control">
+            <textarea name="message" placeholder="Write Message..."></textarea>
+            <button type="submit" class="btn theme-btn-1">Send Messege</button>
+                        </form>
+                    </div>
+                    
+                                       
+                </aside>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SHOP DETAILS AREA END -->
+
+{% endblock content %}
+

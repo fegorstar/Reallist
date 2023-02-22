@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Reallist Estate {% block title %}{% endblock %}</title>
+
+     <!-- Place favicon.png in the root directory -->
+     <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon" />
+     <!-- Font Icons css -->
+     <link rel="stylesheet" href="{% static 'css/font-icons.css' %}">
+     <!-- plugins css -->
+     <link rel="stylesheet" href="{% static 'css/plugins.css' %}">
+     <!-- Main Stylesheet -->
+     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+     <!-- Responsive css -->
+     <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+     
+</head>
+<body>
+    
+    
+ <!-- header -->
+ 
+    <div class="body-wrapper">
+
+    {% block content%}
+
+    {% endblock content%}
+    {% include "_partials/footer.html" %}
+</div>
+ <!-- footer-->
+
+    <!-- All JS Plugins -->
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <!-- Main JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+  
+</body>
+</html>

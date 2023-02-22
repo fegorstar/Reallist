@@ -1,0 +1,163 @@
+{% extends "base.html" %}  
+{% load static %}
+{% load humanize %}
+{% block title %} | Browse Property Listings {% endblock %}
+
+{% block content %}
+{% include "_partials/header.html" %}
+
+  <!-- BREADCRUMB AREA START -->
+<div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image "  data-bs-bg="img/bg/14.jpg">
+    <div class="container">
+        <div class="row">
+           
+            <div class="col-lg-12" style="margin-top:-70px; margin-bottom:-120px">
+                <div class="ltn__breadcrumb-inner">
+                    <h1 class="page-title">Browse Property Listings</h1>
+                    <div class="ltn__breadcrumb-list">
+                        <ul>
+                            <li><a href="{% url 'index' %}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> Home</a></li>
+                            <li>Property Listings</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- BREADCRUMB AREA END -->
+    
+ <!-- PRODUCTS AREA START -->
+    <div class="ltn__product-slider-area ltn__product-gutter ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title-area ltn__section-title-2--- text-center">
+                        <h6 class="section-subtitle section-subtitle-2 ltn__secondary-color">Property Searching made Easy</h6>
+                        <h1 class="section-title">Latest Listings</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row ltn__product-slider-item-three-active--- slick-arrow-1">
+                <!-- ltn__product-item -->
+                {% if listings %}
+                {% for listing in listings %}
+                <div class="col-xl-4 col-sm-6 col-12">
+                    <div class="ltn__product-item ltn__product-item-4 ltn__product-item-5 text-center---">
+                        <div class="product-img">
+                            <a href="{% url 'listing' listing.id %}"><img src="{{ listing.photo_main.url }}" alt="#"></a>
+                            <div class="real-estate-agent">
+                                <h2>
+                                    <span class="sale-badge bg-green text-white">${{ listing.price | intcomma }}</span>
+                                  </h2>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            
+                            <h2 class="product-title"><a href="{% url 'listing' listing.id %}">{{ listing.title }}</a></h2>
+                            <div class="product-img-location">
+                                <ul>
+                                    <li>
+                                        <a href="#"><i class="flaticon-pin"></i> {{ listing.address }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                         
+                            <ul class="ltn__list-item-2 ltn__list-item-2-before">
+                                <li><span> <i class="flaticon-square-shape-design-interface-tool-symbol"></i> {{ listing.sqft }}</span>
+                                    square Ft
+                                </li>
+                               
+                                <li><span> <i class="flaticon-clean"></i> {{ listing.bedrooms }}</span>
+                                    Bathrooms
+                                </li>
+                                <li><span> <i class="flaticon-bed"></i> {{ listing.bathrooms }}</span>
+                                    Bedrooms
+                                </li>
+                                
+                            </ul>
+                            <ul class="ltn__list-item-2--- ltn__list-item-2-before--- ltn__plot-brief">
+                               
+                                <li><span><i class="flaticon-car"></i> {{ listing.garage }} </span>
+                                    Garage
+                                </li>
+                               
+                                <li><span> <i class=" fas fa-clock"></i> {{ listing.list_date | timesince }} </span>
+                
+                                </li>
+                            </ul>
+                           
+                        </div>
+                        
+                        <div class="product-info-bottom" style="font-size:13px">
+                            <div class="" >
+                                <span><i class="icon-user"></i> {{ listing.realtor }}</span>
+                            </div>
+                            <div class="search-by-place-btn">
+                                <a href="{% url 'listing' listing.id %}">View Details <i class="flaticon-right-arrow"></i></a>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div> 
+                {% endfor %}
+
+        {% else %}
+        <div class="col-md-12">
+          <p>No Listings Available</p>
+        </div>
+      {% endif %}
+
+       <!--end of ltn__product-item -->
+               
+            </div>
+        </div>
+    </div>
+
+      <!-- pagination -->
+    <div class="ltn__pagination-area text-center pb-70">
+        <div class="ltn__pagination">
+          
+            {% if listings.has_other_pages %}
+            <ul>
+                   <!-- check if previous page exist -->
+                {% if listings.has_previous %}
+                <li><a href="?page={{listings.previous_page_number}}"><i class="fas fa-angle-double-left"></i></a></li>
+              {% else %}
+              <li class="disabled"><a href="#"><i class="fas fa-angle-double-left"></i></a></li>
+              {% endif %}
+
+                 <!-- check the range -->
+              {% for i in listings.paginator.page_range %}
+              {% if listings.number == i %}
+              <li class="active"><a href="#">{{i}}</a></li>
+                
+              {% else %}
+                <li>
+                  <a href="?page={{i}}">{{i}}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+               <!-- check for next page -->
+            {% if listings.has_next %}
+              <li>
+                <a href="?page={{listings.next_page_number}}" ><i class="fas fa-angle-double-right"></i></a>
+              </li>
+            {% else %}
+            
+            <li class="disabled"><a href="#"><i class="fas fa-angle-double-right"></i></a></li>
+            
+            {% endif %}
+               
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+  
+    <!-- PRODUCT SLIDER AREA END -->
+
+
+{% endblock content %}
+

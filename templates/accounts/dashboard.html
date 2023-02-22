@@ -1,0 +1,77 @@
+{% extends "base.html" %}  
+{% load static %}
+
+{% block title %} | User Dashboard {% endblock %}
+{% block content %}
+{% include "_partials/header.html" %}
+
+  <!-- BREADCRUMB AREA START -->
+  <div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image "  data-bs-bg="img/bg/14.jpg">
+    <div class="container">
+        <div class="row">
+           
+            <div class="col-lg-12" style="margin-top:-70px; margin-bottom:-120px">
+                <div class="ltn__breadcrumb-inner">
+                    <h1 class="page-title">My Property Listings</h1>
+                    <div class="ltn__breadcrumb-list">
+                        <ul>
+                            <li><a href="{% url 'index' %}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> Home</a></li>
+                            <li>My Property Listings</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- BREADCRUMB AREA END -->
+ <!-- SELECT AVAILABILITY AREA START -->
+ <div class="select-availability-area pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title-area ltn__section-title-2--- text-center---">
+                  
+                     <h6 class="section-title">Welcome {{ user.username }}</h6>
+                    
+                     <h3 class="section-subtitle section-subtitle-2--- ltn__secondary-color">Here are the property listings, that you have inquired about.</h3>
+                  
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                {% if contacts %}
+                <div class="ltn__select-availability-table-wrap">
+                   
+                    <div class="ltn__select-availability-table d-none d-md-block">
+                        
+                        <ul class="ltn__select-availability-table-head">
+                            <li>#</li>
+                            <li>Property</li>
+                            <li>Action</li>
+                          
+                        </ul>
+                       
+                        <ul class="ltn__select-availability-table-row">
+                            {% for contact in contacts %}
+                            <li class="tower-name">{{ contact.id }}</li>
+                            <li>{{ contact.listing }}</li>
+                            <li > <span class=" btn btn-danger"><a href="{% url 'listing' contact.listing_id %}">View Listing</a></span></li>
+                            {% endfor %}
+                        </ul>
+                        
+                    </div>
+                   
+                </div>
+                {% else %}
+                <p>You have not made any inquiries</p>
+              {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SELECT AVAILABILITY AREA END -->
+
+
+{% endblock content %}
